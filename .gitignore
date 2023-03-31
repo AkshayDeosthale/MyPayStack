@@ -1,0 +1,9 @@
+node_modules/
+api-backend/node_modules/
+mypay-frontend/node_modules/
+api-backend/package-lock.json
+mypay-frontend/package-lock.json
+mypay-frontend/.next/
+.vscode/
+.prettierrc
+api-backend/dist/
