@@ -1,15 +1,12 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,6 +14,16 @@ export class AuthController {
 
   @Post()
   create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.login(createAuthDto);
+    if (
+      createAuthDto.username === 'akshay' &&
+      createAuthDto.password === '12345'
+    ) {
+      return this.authService.login(createAuthDto);
+    } else {
+      throw new HttpException(
+        'User credentials dont match!',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 }

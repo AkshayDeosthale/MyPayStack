@@ -1,75 +1,79 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined'
-import { Button, TextField } from '@mui/material'
-import { useRouter } from 'next/router'
-import React from 'react'
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
+import { Button, CircularProgress, TextField } from '@mui/material';
+import { useRouter } from 'next/router';
 
-import { SignInBox } from './muistyles.homepagecomponents'
+import { ChangeEvent, useState } from 'react';
+import { toast } from 'react-toastify';
+import NetworkRequest from 'src/NETWORK';
+import { SignInBox } from './muistyles.homepagecomponents';
 
-type Props = {}
+type Props = {};
 
 const SignIn = ({}: Props) => {
-  const navigate = useRouter()
-  const [showPassword, setShowPassword] = React.useState(false)
+  const navigate = useRouter();
+  const [loading, setloading] = useState(false);
+  const [username, setusername] = useState('');
+  const [password, setpassword] = useState('');
 
-  const handleClickShowPassword = () => setShowPassword(show => !show)
+  const handleLogin = async () => {
+    setloading(true);
+    const loginres: any = await NetworkRequest(
+      'POST',
+      '/auth',
+      { username: username, password: password },
+      false,
+    );
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+    if (loginres.status < 250) {
+      toast.success('Authenticated!');
+      navigate.push('/dashboard');
+      setloading(false);
+    } else {
+      toast.error(loginres.response.data.message);
+      setloading(false);
+    }
+  };
 
   return (
-    <SignInBox component='form'>
+    <SignInBox component="form">
       <h1>Log In</h1>
       <TextField
         required
-        id='outlined-required'
-        label='Username or Email'
-        defaultValue='Hello World'
-        color='secondary'
-        fullWidth
-      />
-      {/* <OutlinedInput
-        label="Password"
+        id="username"
+        name="username"
+        label="Username or Email"
         color="secondary"
         fullWidth
-        type={showPassword ? "text" : "password"}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        }
-      /> */}
+        onChange={(e) => setusername(e.target.value)}
+      />
+
       <TextField
-        id='outlined-password-input'
+        id="password"
+        name="password"
         required
-        label='Password'
-        type='password'
-        autoComplete='current-password'
-        color='secondary'
+        label="Password"
+        type="password"
+        autoComplete="current-password"
+        color="secondary"
         fullWidth
+        onChange={(e) => setpassword(e.target.value)}
       />
       <Button
-        variant='outlined'
-        size='large'
-        endIcon={<ArrowCircleRightOutlinedIcon />}
-        color='success'
-        type='submit'
-        onClick={() => {
-          navigate.push('/dashboard')
+        variant="outlined"
+        size="large"
+        endIcon={loading ? null : <ArrowCircleRightOutlinedIcon />}
+        color="success"
+        type="submit"
+        onClick={(e) => {
+          e.preventDefault();
+          handleLogin();
         }}
       >
-        Log In
+        {loading ? <CircularProgress size={25} color="success" /> : 'Log In'}
       </Button>
     </SignInBox>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

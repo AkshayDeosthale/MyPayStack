@@ -8,3 +8,4 @@ mypay-frontend/.next/
 .prettierrc
 api-backend/dist/
 package-lock.json
+mypay-frontend/.env.local
