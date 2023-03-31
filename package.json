@@ -1,0 +1,24 @@
+{
+  "name": "mypaystack",
+  "version": "1.0.0",
+  "description": "Global execution",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd api-backend && npm run start:dev\" \"cd mypay-frontend && npm run dev\"",
+    "build": "concurrently \"cd api-backend && npm run build\" \"cd mypay-frontend && npm run build\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkshayDeosthale/MyPayStack.git"
+  },
+  "author": "Akshay Deosthale",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AkshayDeosthale/MyPayStack/issues"
+  },
+  "homepage": "https://github.com/AkshayDeosthale/MyPayStack#readme",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

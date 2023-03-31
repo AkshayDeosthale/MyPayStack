@@ -7,3 +7,4 @@ mypay-frontend/.next/
 .vscode/
 .prettierrc
 api-backend/dist/
+package-lock.json
